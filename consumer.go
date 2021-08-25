@@ -1,35 +1,30 @@
 package main
 
-import ( 
-	"encoding/json"
-	"github.com/dgrijalva/jwt-go"
-	"github.com/gocql/gocql"
-	"net/http"
-	"time"
-	"log"
-    "golang.org/x/crypto/bcrypt"
-	"regexp"
+import (
+
 	// kafka
 	"context"
-	"github.com/segmentio/kafka-go"
+	"fmt"
 
+	"github.com/segmentio/kafka-go"
 )
 
-func main()  {
+func main() {
 	fmt.Println("Kafka Consumer using Golang")
 	reader := kafka.NewReader(kafka.ReaderConfig{
 		Brokers: []string{"0.0.0.0:9092"},
-		Topic: "goscreencasts",
+		Topic:   "sp-user",
+		GroupID: "sp-user-1",
 	})
-	defer reader.close()
+	defer reader.Close()
 
-	fmt.Println(Consumer is runing..."")
+	fmt.Println("Consumer is runing...")
 
 	for {
 		msg, err := reader.ReadMessage(context.Background())
 		if err != nil {
 			fmt.Println(err)
 		}
-		fmt.Print("Topic : %s Message : %s Partition :%d \n", msg.Topic, string(msg.Value), msg.Partition)
+		fmt.Println("Time: %s |  Topic: %s | Key : %s |  Message : %s | Partition :%d \n", msg.Time, msg.Topic, msg.Key, string(msg.Value), msg.Partition)
 	}
 }

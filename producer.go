@@ -11,17 +11,17 @@ import (
 func main() {
 	fmt.Println("Kafka Producer using Golang")
 	writer := kafka.Writer{
-		Addr:  kafka.TCP{"0.0.0.0:9092"},
-		Topic: "goscreencasts",
+		Addr:  kafka.TCP("10.0.0.118:9092"),
+		Topic: "sp-user",
 	}
-	defer writer.close()
+	defer writer.Close()
 
-	for i = 0; ; i++ {
+	for i := 100; i < 105; i++ {
 		msg := kafka.Message{
-			key:   []byte(fmt.Sprint("Key-%d", i+1)),
+			Key:   []byte(fmt.Sprint("Key-%d", i+1)),
 			Value: []byte(fmt.Sprint("Message : %d", i+1)),
 		}
-		err := writer.WriterMessage(context.Background(), msg)
+		err := writer.WriteMessages(context.Background(), msg)
 		if err != nil {
 			fmt.Print(err)
 		}
